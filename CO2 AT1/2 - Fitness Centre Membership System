@@ -1,0 +1,34 @@
+// Fitness Centre Membership System
+#include <iostream>
+#include <string>
+using namespace std;
+class Member {
+    int id;
+    string name, plan;
+    double fee;
+    static int totalMembers;
+public:
+    void assignPlan() {
+        cout << "Enter ID, Name, and Plan (Basic/Premium/VIP): ";
+        cin >> id >> name >> plan;     
+        if (plan == "Basic") fee = 30.0;
+        else if (plan == "Premium") fee = 60.0;
+        else fee = 100.0;
+        totalMembers++;
+    }
+    void display() {
+        cout << "ID: " << id << " | Name: " << name << " | Plan: " << plan << " | Fee: $" << fee << endl;
+    }
+    static void showTotal() {
+        cout << "Total Active Members: " << totalMembers << endl;
+    }
+};
+int Member::totalMembers = 0;
+int main() {
+    Member m[2];
+    for(int i = 0; i < 2; i++) m[i].assignPlan();
+    cout << "\n--- Membership Details ---\n";
+    for(int i = 0; i < 2; i++) m[i].display();
+    Member::showTotal();
+    return 0;
+}
