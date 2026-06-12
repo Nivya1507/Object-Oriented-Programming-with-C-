@@ -1,0 +1,39 @@
+//E-Commerce Shopping Cart
+#include <iostream>
+#include <string>
+using namespace std;
+class Product {
+    string name;
+    double price;
+    int qty;
+    static int accounts;
+public:
+    Product() { 
+        if(accounts == 0) accounts = 1; 
+    }
+    void getData() {
+        cout << "Enter Product Name, Price, and Quantity: ";
+        cin >> name >> price >> qty;
+    }
+    double calcTotal() { return price * qty; }
+    void display() {
+        cout << name << " | $" << price << " | Qty: " << qty << " | Total: $" << calcTotal() << endl;
+    }
+    static void showAccounts() { 
+        cout << "Active Accounts: " << accounts << endl; 
+    }
+};
+int Product::accounts = 0;
+int main() {
+    Product cart[2];
+    double grandTotal = 0;    
+    for(int i = 0; i < 2; i++) {
+        cart[i].getData();
+        grandTotal += cart[i].calcTotal();
+    }    
+    cout << "\n--- Shopping Cart Bill ---\n";
+    for(int i = 0; i < 2; i++) cart[i].display();
+    cout << "-----------------------\nGrand Total: $" << grandTotal << endl;
+    Product::showAccounts();
+    return 0;
+}
