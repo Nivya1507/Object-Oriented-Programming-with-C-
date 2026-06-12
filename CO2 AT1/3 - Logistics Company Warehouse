@@ -1,0 +1,39 @@
+//Logistics Company Warehouse
+#include <iostream>
+#include <string>
+using namespace std;
+class Warehouse {
+    int id, qty;
+    string name, location;
+    static int totalItems;
+public:
+    void addInventory() {
+        cout << "Enter Item ID, Name, Quantity, and Location: ";
+        cin >> id >> name >> qty >> location;
+        if(qty > 0) totalItems += qty;
+        else qty = 0;
+    }
+    void updateInventory(int change) {
+        if (qty + change >= 0) {
+            qty += change;
+            totalItems += change;
+        }
+    }
+    void display() {
+        cout << id << " | " << name << " | Qty: " << qty << " | Loc: " << location << endl;
+    }
+    static void showTotal() { 
+        cout << "Total Warehouse Items: " << totalItems << endl; 
+    }
+};
+int Warehouse::totalItems = 0;
+int main() {
+    Warehouse w[2];
+    for(int i = 0; i < 2; i++) w[i].addInventory();    
+    cout << "\nRemoving 5 units from the first item...\n";
+    w[0].updateInventory(-5);   
+    cout << "\n--- Inventory Status ---\n";
+    for(int i = 0; i < 2; i++) w[i].display();
+    Warehouse::showTotal();
+    return 0;
+}
