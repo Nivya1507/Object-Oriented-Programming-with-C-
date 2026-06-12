@@ -1,0 +1,73 @@
+//Student Analytics System
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+class Department {
+private:
+    string deptName;
+    int numStudents;
+    string studentNames[50];
+    float marks[50];
+    static int totalUniversityStudents;
+public:
+    void inputDetails() {
+        cout << "Enter Department Name: ";
+        cin >> deptName;
+        cout << "Enter Number of Students: ";
+        cin >> numStudents;        
+        for(int i = 0; i < numStudents; i++) {
+            cout << "Enter Name and Marks for student " << i + 1 << ": ";
+            cin >> studentNames[i] >> marks[i];
+            totalUniversityStudents++;
+        }
+    }
+    void processDepartment(string &overallTopper, float &highestOverallMarks) {
+        if (numStudents == 0) {
+            cout << "--- " << deptName << " Stats ---\nNo students in this department.\n";
+            return;
+        }
+        float deptHighest = -1;
+        string deptTopper = "";
+        int passCount = 0;
+        for(int i = 0; i < numStudents; i++) {
+            if (marks[i] >= 40.0) passCount++;            
+            if (marks[i] > deptHighest) {
+                deptHighest = marks[i];
+                deptTopper = studentNames[i];
+            }
+        }
+        if (deptHighest > highestOverallMarks) {
+            highestOverallMarks = deptHighest;
+            overallTopper = deptTopper;
+        }
+        float passPercentage = ((float)passCount / numStudents) * 100;        
+        cout << "--- " << deptName << " Stats ---\n";
+        cout << "Department Topper: " << deptTopper << " (" << deptHighest << " marks)\n";
+        cout << "Pass Percentage: " << fixed << setprecision(2) << passPercentage << "%\n";
+    }
+    static void displayTotalStudents() {
+        cout << "\nTotal Students Across University: " << totalUniversityStudents << endl;
+    }
+};
+int Department::totalUniversityStudents = 0;
+int main() {
+    int numDepts;
+    cout << "Enter number of departments: ";
+    cin >> numDepts;
+    Department depts[10];
+    string overallTopper = "None";
+    float highestOverallMarks = -1;
+    for(int i = 0; i < numDepts; i++) {
+        cout << "\n--- Department " << i + 1 << " ---\n";
+        depts[i].inputDetails();
+    }
+    cout << "\n================ REPORTS ================\n";
+    for(int i = 0; i < numDepts; i++) {
+        depts[i].processDepartment(overallTopper, highestOverallMarks);
+    }
+    Department::displayTotalStudents();
+    cout << "Overall University Topper: " << overallTopper 
+         << " (" << highestOverallMarks << " marks)\n";         
+    return 0;
+}
