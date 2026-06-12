@@ -1,0 +1,33 @@
+//Relational Operator Overloading 
+#include <iostream>
+using namespace std;
+
+class Box {
+private:
+    double volume;
+
+public:
+    Box(double v) {
+        volume = v;
+    }
+
+    bool operator>(const Box &b) const {
+        return volume > b.volume;
+    }
+
+    double getVolume() const {
+        return volume;
+    }
+};
+
+int main() {
+    Box b1(150.5), b2(200.2);
+
+    if (b1 > b2) {
+        cout << "Box 1 has a greater volume (" << b1.getVolume() << ")." << endl;
+    } else {
+        cout << "Box 2 has a greater volume (" << b2.getVolume() << ")." << endl;
+    }
+
+    return 0;
+}
