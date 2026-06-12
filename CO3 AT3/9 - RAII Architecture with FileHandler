@@ -1,0 +1,23 @@
+//RAII Architecture with FileHandler
+#include <iostream>
+using namespace std;
+
+class FileHandler {
+public:
+    FileHandler() {
+        cout << "File opened successfully in constructor." << endl;
+    }
+
+    ~FileHandler() {
+        cout << "File closed safely in destructor." << endl;
+    }
+};
+
+int main() {
+    {
+        FileHandler fh;
+        cout << "Processing active file instructions..." << endl;
+    }
+    cout << "Out of file operation scope." << endl;
+    return 0;
+}
