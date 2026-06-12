@@ -1,0 +1,66 @@
+//Sports Tournament Scoring System
+#include <iostream>
+#include <string>
+using namespace std;
+class Team {
+private:
+    string name;
+    int matches, wins, draws, losses;
+    int goalsScored, goalsConceded;
+    int points, goalDiff;
+    static int totalTeamsInTournament;
+public:
+    void inputTeam() {
+        cout << "Enter Team Name, Wins, Draws, Losses, Goals Scored, Goals Conceded:\n";
+        cin >> name >> wins >> draws >> losses >> goalsScored >> goalsConceded;
+        matches = wins + draws + losses;
+        points = (wins * 3) + (draws * 1);
+        goalDiff = goalsScored - goalsConceded;
+        totalTeamsInTournament++;
+    }
+    int getPoints() const { return points; }
+    int getGoalDiff() const { return goalDiff; }
+    int getWins() const { return wins; }
+    string getName() const { return name; }
+    void display() const {
+        cout << name << " | Pts: " << points << " | GD: " << goalDiff << " | Wins: " << wins << endl;
+    }
+    static void displayTotalTeams() {
+        cout << "\nTotal Teams in Tournament: " << totalTeamsInTournament << endl;
+    }
+};
+int Team::totalTeamsInTournament = 0;
+Team findGroupWinner(Team group[], int size) {
+    Team winner = group[0];
+    for (int i = 1; i < size; i++) {
+        if (group[i].getPoints() > winner.getPoints()) {
+            winner = group[i];
+        } else if (group[i].getPoints() == winner.getPoints()) {
+            if (group[i].getGoalDiff() > winner.getGoalDiff()) {
+                winner = group[i];
+            } else if (group[i].getGoalDiff() == winner.getGoalDiff()) {
+                if (group[i].getWins() > winner.getWins()) {
+                    winner = group[i];
+                }
+            }
+        }
+    }
+    return winner;
+}
+int main() {
+    Team groupA[2], groupB[2];
+    cout << "--- Group A Data ---\n";
+    for(int i = 0; i < 2; i++) groupA[i].inputTeam();
+    cout << "\n--- Group B Data ---\n";
+    for(int i = 0; i < 2; i++) groupB[i].inputTeam();
+    cout << "\n================ TOURNAMENT RESULTS ================\n";
+    Team winnerA = findGroupWinner(groupA, 2);
+    Team winnerB = findGroupWinner(groupB, 2);
+    cout << "Group A Winner: "; winnerA.display();
+    cout << "Group B Winner: "; winnerB.display();
+    Team finalTeams[2] = {winnerA, winnerB};
+    Team overallChamp = findGroupWinner(finalTeams, 2);
+    Team::displayTotalTeams();
+    cout << "OVERALL TOURNAMENT CHAMPION: " << overallChamp.getName() << "!\n";
+    return 0;
+}
