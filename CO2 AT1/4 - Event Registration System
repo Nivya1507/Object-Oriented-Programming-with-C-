@@ -1,0 +1,43 @@
+//Event Registration System
+#include <iostream>
+#include <string>
+using namespace std;
+class Event {
+    int regID;
+    string eventName, participant;
+    static int totalParticipants;
+public:
+    int getID() { return regID; }
+    void registerParticipant(int id, string name, string eName) {
+        regID = id; 
+        participant = name; 
+        eventName = eName;
+        totalParticipants++;
+    }
+    void display() {
+        cout << "ID: " << regID << " | " << participant << " | " << eventName << endl;
+    }
+    static void showTotal() { 
+        cout << "Total Registered: " << totalParticipants << endl; 
+    }
+};
+int Event::totalParticipants = 0;
+int main() {
+    Event events[2];
+    int count = 0, id;
+    string name, eName;
+    while(count < 2) {
+        cout << "Enter Reg ID, Participant Name, and Event: ";
+        cin >> id >> name >> eName;     
+        bool dup = false;
+        for(int i = 0; i < count; i++) {
+            if(events[i].getID() == id) dup = true;
+        }        
+        if(dup) cout << "Duplicate ID! Try again.\n";
+        else events[count++].registerParticipant(id, name, eName);
+    }    
+    cout << "\n--- Registration Details ---\n";
+    for(int i = 0; i < 2; i++) events[i].display();
+    Event::showTotal();
+    return 0;
+}
