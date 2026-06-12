@@ -1,1 +1,32 @@
-
+#include <iostream>
+#include <string>
+using namespace std;
+class Violation {
+    string vehicleNum, owner, type;
+    double fine;
+    static int totalViolations;
+public:
+    void inputDetails() {
+        cout << "Enter Vehicle Number, Owner, and Type (Speeding/Parking/Signal): ";
+        cin >> vehicleNum >> owner >> type;
+        if (type == "Speeding") fine = 1000.0;
+        else if (type == "Parking") fine = 500.0;
+        else fine = 1500.0;  
+        totalViolations++;
+    }
+    void display() {
+        cout << vehicleNum << " | " << owner << " | " << type << " | $" << fine << endl;
+    }
+    static void showTotal() {
+        cout << "Total Violations: " << totalViolations << endl;
+    }
+};
+int Violation::totalViolations = 0;
+int main() {
+    Violation v[2];
+    for(int i = 0; i < 2; i++) v[i].inputDetails();
+    cout << "\n--- Violation Reports ---\n";
+    for(int i = 0; i < 2; i++) v[i].display();
+    Violation::showTotal();
+    return 0;
+}
