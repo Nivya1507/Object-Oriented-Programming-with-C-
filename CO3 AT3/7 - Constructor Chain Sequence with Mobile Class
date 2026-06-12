@@ -1,0 +1,36 @@
+//Constructor Chain Sequence with Mobile Class
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Mobile {
+private:
+    string brand;
+    double price;
+
+public:
+    Mobile() {
+        brand = "Generic";
+        price = 0.0;
+        cout << "Default Constructor Called\n";
+    }
+
+    Mobile(string b, double p) {
+        brand = b;
+        price = p;
+        cout << "Parameterized Constructor Called\n";
+    }
+
+    Mobile(const Mobile &m) {
+        brand = m.brand;
+        price = m.price;
+        cout << "Copy Constructor Called\n";
+    }
+};
+
+int main() {
+    Mobile m1;
+    Mobile m2("Apple", 999.99);
+    Mobile m3 = m2;
+    return 0;
+}
