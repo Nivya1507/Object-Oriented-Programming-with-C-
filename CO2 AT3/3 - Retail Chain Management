@@ -1,0 +1,77 @@
+//Retail Chain Management
+#include <iostream>
+#include <string>
+using namespace std;
+class Product {
+private:
+    string name;
+    double price;
+    int quantity;
+public:
+    void inputProduct() {
+        cin >> name >> price >> quantity;
+    }
+    double getSales() const { return price * quantity; }
+    string getName() const { return name; }
+};
+class Store {
+private:
+    string storeName;
+    int numProducts;
+    Product products[50];
+    double storeTotal;
+    static double chainTotalSales;
+public:
+    void inputStore() {
+        cout << "Enter Store Name and Number of Products: ";
+        cin >> storeName >> numProducts;
+        storeTotal = 0;    
+        for(int i = 0; i < numProducts; i++) {
+            cout << "Product " << i + 1 << " (Name, Price, Qty): ";
+            products[i].inputProduct();
+            storeTotal += products[i].getSales();
+        }
+        chainTotalSales += storeTotal;
+    }
+    double getStoreSales() const { return storeTotal; }
+    string getStoreName() const { return storeName; }
+    void findBestProduct(string &bestProdName, double &highestProdSales) {
+        for(int i = 0; i < numProducts; i++) {
+            if(products[i].getSales() > highestProdSales) {
+                highestProdSales = products[i].getSales();
+                bestProdName = products[i].getName();
+            }
+        }
+    }
+    static void displayChainTotal() {
+        cout << "\nTotal Chain Sales: $" << chainTotalSales << endl;
+    }
+};
+double Store::chainTotalSales = 0;
+int main() {
+    int numStores;
+    cout << "Enter number of stores: ";
+    cin >> numStores;
+    Store stores[10];
+    string bestStore = "", bestProduct = "";
+    double highestStoreSales = -1, highestProdSales = -1;
+    for(int i = 0; i < numStores; i++) {
+        cout << "\n--- Store " << i + 1 << " ---\n";
+        stores[i].inputStore();        
+        // Check for best store
+        if (stores[i].getStoreSales() > highestStoreSales) {
+            highestStoreSales = stores[i].getStoreSales();
+            bestStore = stores[i].getStoreName();
+        }       
+        // Check for best overall product
+        stores[i].findBestProduct(bestProduct, highestProdSales);
+    }
+    cout << "\n================ RETAIL REPORT ================\n";
+    for(int i = 0; i < numStores; i++) {
+        cout << "Store: " << stores[i].getStoreName() << " | Total Sales: $" << stores[i].getStoreSales() << endl;
+    }
+    Store::displayChainTotal();
+    cout << "Best Performing Store: " << bestStore << " ($" << highestStoreSales << ")\n";
+    cout << "Top Selling Product Overall: " << bestProduct << " ($" << highestProdSales << ")\n";
+    return 0;
+}
