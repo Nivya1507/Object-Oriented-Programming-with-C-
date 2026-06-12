@@ -1,0 +1,77 @@
+//Election System
+#include <iostream>
+#include <string>
+using namespace std;
+class Region {
+private:
+    string regionName;
+    int numCandidates;
+    string candNames[20];
+    int votes[20];
+    static int totalCountryVotes;
+public:
+    void inputVotes() {
+        cout << "Enter Region Name: ";
+        cin >> regionName;
+        cout << "Enter Number of Candidates: ";
+        cin >> numCandidates;        
+        for(int i = 0; i < numCandidates; i++) {
+            cout << "Enter Candidate Name and Votes: ";
+            cin >> candNames[i] >> votes[i];
+            totalCountryVotes += votes[i];
+        }
+    }
+    void processRegion(string &overallWinner, int &highestOverallVotes, bool &overallTie) {
+        if (numCandidates == 0) return;
+        int maxVotes = -1;
+        string regionWinner = "";
+        bool regionTie = false;
+        for(int i = 0; i < numCandidates; i++) {
+            if (votes[i] > maxVotes) {
+                maxVotes = votes[i];
+                regionWinner = candNames[i];
+                regionTie = false;
+            } else if (votes[i] == maxVotes) {
+                regionTie = true;
+            }
+        }
+        if (maxVotes > highestOverallVotes) {
+            highestOverallVotes = maxVotes;
+            overallWinner = candNames[0]; // Temporary baseline
+            overallTie = regionTie;
+            if(!regionTie) overallWinner = regionWinner;
+        } else if (maxVotes == highestOverallVotes && maxVotes != -1) {
+            overallTie = true;
+        }
+        cout << "Region: " << regionName << " | Winner: ";
+        if (regionTie) cout << "TIE";
+        else cout << regionWinner;
+        cout << " (" << maxVotes << " votes)\n";
+    }
+    static void displayTotalVotes() {
+        cout << "\nTotal Votes Cast in Country: " << totalCountryVotes << endl;
+    }
+};
+int Region::totalCountryVotes = 0;
+int main() {
+    int numRegions;
+    cout << "Enter number of regions: ";
+    cin >> numRegions;
+    Region regions[10];
+    string overallWinner = "None";
+    int highestOverallVotes = -1;
+    bool overallTie = false;
+    for(int i = 0; i < numRegions; i++) {
+        cout << "\n--- Region " << i + 1 << " ---\n";
+        regions[i].inputVotes();
+    }
+    cout << "\n================ ELECTION RESULTS ================\n";
+    for(int i = 0; i < numRegions; i++) {
+        regions[i].processRegion(overallWinner, highestOverallVotes, overallTie);
+    }
+    Region::displayTotalVotes();
+    cout << "Overall Country Winner: ";
+    if (overallTie) cout << "TIE Situation!\n";
+    else cout << overallWinner << " with " << highestOverallVotes << " peak regional votes.\n";
+    return 0;
+}
